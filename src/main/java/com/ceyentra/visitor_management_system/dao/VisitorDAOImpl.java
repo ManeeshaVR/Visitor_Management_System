@@ -28,17 +28,18 @@ public class VisitorDAOImpl implements VisitorDAO{
     }
 
     @Override
-    public List<Visitor> findAllVisitors() {
-        return null;
-    }
-
-    @Override
     public void update(Visitor visitor) {
-
+        entityManager.merge(visitor);
     }
 
     @Override
     public void delete(Integer id) {
 
     }
+
+    @Override
+    public List<Visitor> findAllVisitors() {
+        return null;
+    }
+
 }

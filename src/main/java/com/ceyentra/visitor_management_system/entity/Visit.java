@@ -20,7 +20,7 @@ public class Visit {
     @Column(name = "visit_id")
     private int visitId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "visitor_id", nullable = false)
     private Visitor visitor;
 

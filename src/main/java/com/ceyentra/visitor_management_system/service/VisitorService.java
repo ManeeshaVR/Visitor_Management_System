@@ -15,5 +15,5 @@ public interface VisitorService {
     Visitor findById(Integer id);
 
     List<Visitor> findAllVisitors();
-    
+
 }

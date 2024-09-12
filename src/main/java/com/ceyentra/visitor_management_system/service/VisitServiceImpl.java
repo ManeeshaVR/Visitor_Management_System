@@ -23,31 +23,32 @@ public class VisitServiceImpl implements VisitService{
 
     @Override
     public Visit save(Visit visit) {
-        return null;
-    }
-
-    @Override
-    public Visit findById(Integer id) {
-        return null;
-    }
-
-    @Override
-    public List<Visit> findAllVisits() {
-        return null;
+        return visitDAO.save(visit);
     }
 
     @Override
     public Visit update(Visit visit) {
-        return null;
+        return visitDAO.update(visit);
     }
 
     @Override
     public void delete(Integer id) {
+        visitDAO.delete(id);
+    }
 
+    @Override
+    public Visit findById(Integer id) {
+        return visitDAO.findById(id);
+    }
+
+    @Override
+    public List<Visit> findAllVisits() {
+        return visitDAO.findAllVisits();
     }
 
     @Override
     public Visitor findVisitor(Integer id) {
-        return null;
+        return visitorDAO.findById(id);
     }
+    
 }

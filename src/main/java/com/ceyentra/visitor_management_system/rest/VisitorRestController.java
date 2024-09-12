@@ -45,4 +45,9 @@ public class VisitorRestController {
         return visitorService.findById(visitorId);
     }
 
+    @GetMapping("/visitors")
+    public List<Visitor> getAllVisitors(){
+        return visitorService.findAllVisitors();
+    }
+
 }

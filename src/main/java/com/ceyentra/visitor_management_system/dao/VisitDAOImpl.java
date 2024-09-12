@@ -19,7 +19,7 @@ public class VisitDAOImpl implements VisitDAO{
 
     @Override
     public Visit save(Visit visit) {
-        return null;
+        return entityManager.merge(visit);
     }
 
     @Override
@@ -41,5 +41,5 @@ public class VisitDAOImpl implements VisitDAO{
     public void delete(Integer id) {
 
     }
-    
+
 }

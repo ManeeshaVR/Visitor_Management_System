@@ -30,10 +30,10 @@ public class Visit {
     @Column(name = "check_in", nullable = false)
     private LocalTime checkIn;
 
-    @Column(name = "check_out", nullable = false)
+    @Column(name = "check_out")
     private LocalTime checkOut;
 
-    @Column(name = "purpose", length = 255)
+    @Column(name = "purpose", length = 255, nullable = false)
     private String purpose;
 
 

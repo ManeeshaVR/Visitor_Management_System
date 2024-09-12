@@ -5,6 +5,8 @@ import com.ceyentra.visitor_management_system.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class VisitorRestController {
@@ -25,6 +27,12 @@ public class VisitorRestController {
     public Visitor saveVisitor(@RequestBody Visitor visitor){
         visitor.setVisitorId(0);
         return visitorService.save(visitor);
+    }
+
+    @PutMapping("/visitors/{visitorId}")
+    public Visitor updateVisitor(@PathVariable int visitorId, @RequestBody Visitor visitor){
+        visitor.setVisitorId(visitorId);
+        return visitorService.update(visitor);
     }
 
 }

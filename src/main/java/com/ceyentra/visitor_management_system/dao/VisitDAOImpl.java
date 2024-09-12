@@ -23,6 +23,16 @@ public class VisitDAOImpl implements VisitDAO{
     }
 
     @Override
+    public Visit update(Visit visit) {
+        return entityManager.merge(visit);
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+    }
+
+    @Override
     public Visit findById(Integer id) {
         return null;
     }
@@ -30,16 +40,6 @@ public class VisitDAOImpl implements VisitDAO{
     @Override
     public List<Visit> findAllVisits() {
         return null;
-    }
-
-    @Override
-    public Visit update(Visit visit) {
-        return null;
-    }
-
-    @Override
-    public void delete(Integer id) {
-
     }
 
 }

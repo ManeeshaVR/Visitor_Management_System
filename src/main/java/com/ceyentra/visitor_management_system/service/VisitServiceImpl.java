@@ -6,6 +6,7 @@ import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,16 +22,19 @@ public class VisitServiceImpl implements VisitService{
         this.visitorDAO = visitorDAO;
     }
 
+    @Transactional
     @Override
     public Visit save(Visit visit) {
         return visitDAO.save(visit);
     }
 
+    @Transactional
     @Override
     public Visit update(Visit visit) {
         return visitDAO.update(visit);
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         visitDAO.delete(id);
@@ -50,5 +54,5 @@ public class VisitServiceImpl implements VisitService{
     public Visitor findVisitor(Integer id) {
         return visitorDAO.findById(id);
     }
-    
+
 }

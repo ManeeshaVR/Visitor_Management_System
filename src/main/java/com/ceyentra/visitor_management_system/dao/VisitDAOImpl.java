@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,11 +25,13 @@ public class VisitDAOImpl implements VisitDAO{
         return entityManager.merge(visit);
     }
 
+    @Transactional
     @Override
     public Visit update(Visit visit) {
         return entityManager.merge(visit);
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         Visit visit = entityManager.find(Visit.class, id);

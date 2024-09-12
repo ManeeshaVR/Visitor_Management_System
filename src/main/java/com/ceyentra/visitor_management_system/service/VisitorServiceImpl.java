@@ -18,13 +18,13 @@ public class VisitorServiceImpl implements VisitorService{
     }
 
     @Override
-    public void save(Visitor visitor) {
-        visitorDAO.save(visitor);
+    public Visitor save(Visitor visitor) {
+        return visitorDAO.save(visitor);
     }
 
     @Override
-    public void update(Visitor visitor) {
-        visitorDAO.update(visitor);
+    public Visitor update(Visitor visitor) {
+        return visitorDAO.update(visitor);
     }
 
     @Override

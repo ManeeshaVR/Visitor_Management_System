@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface VisitorService {
 
-    void save(Visitor visitor);
+    Visitor save(Visitor visitor);
 
-    void update(Visitor visitor);
+    Visitor update(Visitor visitor);
 
     void delete(Integer id);
 

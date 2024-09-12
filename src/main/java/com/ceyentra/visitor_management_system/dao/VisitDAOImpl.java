@@ -1,6 +1,7 @@
 package com.ceyentra.visitor_management_system.dao;
 
 import com.ceyentra.visitor_management_system.entity.Visit;
+import com.ceyentra.visitor_management_system.entity.Visitor;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,8 @@ public class VisitDAOImpl implements VisitDAO{
 
     @Override
     public void delete(Integer id) {
-
+        Visit visit = entityManager.find(Visit.class, id);
+        entityManager.remove(visit);
     }
 
     @Override

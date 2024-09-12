@@ -34,7 +34,8 @@ public class VisitorDAOImpl implements VisitorDAO{
 
     @Override
     public void delete(Integer id) {
-
+        Visitor visitor = entityManager.find(Visitor.class, id);
+        entityManager.remove(visitor);
     }
 
     @Override

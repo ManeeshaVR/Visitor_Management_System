@@ -40,4 +40,9 @@ public class VisitorRestController {
         visitorService.delete(visitorId);
     }
 
+    @GetMapping("/visitors/{visitorId}")
+    public Visitor getVisitor(@PathVariable int visitorId){
+        return visitorService.findById(visitorId);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.ceyentra.visitor_management_system.dao;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ public class VisitorDAOImpl implements VisitorDAO{
     }
 
     @Override
+    @Transactional
     public void save(Visitor visitor) {
-
+        entityManager.persist(visitor);
     }
 
     @Override

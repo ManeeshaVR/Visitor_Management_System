@@ -19,27 +19,27 @@ public class VisitorServiceImpl implements VisitorService{
 
     @Override
     public void save(Visitor visitor) {
-
+        visitorDAO.save(visitor);
     }
 
     @Override
     public void update(Visitor visitor) {
-
+        visitorDAO.update(visitor);
     }
 
     @Override
     public void delete(Integer id) {
-
+        visitorDAO.delete(id);
     }
 
     @Override
     public Visitor findById(Integer id) {
-        return null;
+        return visitorDAO.findById(id);
     }
 
     @Override
     public List<Visitor> findAllVisitors() {
-        return null;
+        return visitorDAO.findAllVisitors();
     }
 
 }

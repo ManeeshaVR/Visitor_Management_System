@@ -35,4 +35,9 @@ public class VisitorRestController {
         return visitorService.update(visitor);
     }
 
+    @DeleteMapping("/visitors/{visitorId}")
+    public void deleteVisitor(@PathVariable int visitorId){
+        visitorService.delete(visitorId);
+    }
+
 }

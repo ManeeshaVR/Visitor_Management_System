@@ -3,6 +3,7 @@ package com.ceyentra.visitor_management_system.dao;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,9 @@ public class VisitDAOImpl implements VisitDAO{
 
     @Override
     public List<Visit> findAllVisits() {
-        return null;
+        TypedQuery<Visit> theQuery = entityManager.createQuery("FROM Visit", Visit.class);
+        List<Visit> visits = theQuery.getResultList();
+        return visits;
     }
 
 }

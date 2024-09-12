@@ -34,4 +34,12 @@ public class VisitRestController {
         return visitService.save(visit);
     }
 
+    @PutMapping("/visits/{visitId}")
+    public Visit updateVisit(@PathVariable int visitId){
+        Visit visit = visitService.findById(visitId);
+        System.out.println(visit);
+        visit.setCheckOut(LocalTime.now());
+        return visitService.update(visit);
+    }
+
 }

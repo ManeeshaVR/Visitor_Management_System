@@ -18,15 +18,14 @@ public class VisitorDAOImpl implements VisitorDAO{
     }
 
     @Override
-    @Transactional
-    public void save(Visitor visitor) {
-        entityManager.persist(visitor);
+    public Visitor save(Visitor visitor) {
+        return entityManager.merge(visitor);
     }
 
     @Override
     @Transactional
-    public void update(Visitor visitor) {
-        entityManager.merge(visitor);
+    public Visitor update(Visitor visitor) {
+        return entityManager.merge(visitor);
     }
 
     @Override

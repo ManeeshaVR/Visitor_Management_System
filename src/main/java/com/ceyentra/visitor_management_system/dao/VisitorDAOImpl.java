@@ -2,6 +2,7 @@ package com.ceyentra.visitor_management_system.dao;
 
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,24 +24,28 @@ public class VisitorDAOImpl implements VisitorDAO{
     }
 
     @Override
-    public Visitor findById(Integer id) {
-        return entityManager.find(Visitor.class, id);
-    }
-
-    @Override
+    @Transactional
     public void update(Visitor visitor) {
         entityManager.merge(visitor);
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         Visitor visitor = entityManager.find(Visitor.class, id);
         entityManager.remove(visitor);
     }
 
     @Override
+    public Visitor findById(Integer id) {
+        return entityManager.find(Visitor.class, id);
+    }
+
+    @Override
     public List<Visitor> findAllVisitors() {
-        return null;
+        TypedQuery<Visitor> theQuery = entityManager.createQuery("FROM Visitor", Visitor.class);
+        List<Visitor> visitors = theQuery.getResultList();
+        return visitors;
     }
 
 }

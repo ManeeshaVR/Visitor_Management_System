@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class VisitorServiceImpl implements VisitorService{
 
     private VisitorDAO visitorDAO;
@@ -18,32 +19,30 @@ public class VisitorServiceImpl implements VisitorService{
         this.visitorDAO = visitorDAO;
     }
 
-    @Transactional
     @Override
     public Visitor save(Visitor visitor) {
         return visitorDAO.save(visitor);
     }
 
-    @Transactional
     @Override
     public Visitor update(Visitor visitor) {
-        return visitorDAO.update(visitor);
+//        return visitorDAO.update(visitor);
+        return new Visitor();
     }
-
-    @Transactional
+    
     @Override
     public void delete(Integer id) {
-        visitorDAO.delete(id);
+        visitorDAO.deleteById(id);
     }
 
     @Override
     public Visitor findById(Integer id) {
-        return visitorDAO.findById(id);
+        return visitorDAO.getReferenceById(id);
     }
 
     @Override
     public List<Visitor> findAllVisitors() {
-        return visitorDAO.findAllVisitors();
+        return visitorDAO.findAll();
     }
 
 }

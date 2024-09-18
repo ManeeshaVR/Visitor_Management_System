@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class VisitServiceImpl implements VisitService{
 
     private VisitDAO visitDAO;
@@ -22,37 +23,35 @@ public class VisitServiceImpl implements VisitService{
         this.visitorDAO = visitorDAO;
     }
 
-    @Transactional
     @Override
     public Visit save(Visit visit) {
         return visitDAO.save(visit);
     }
 
-    @Transactional
     @Override
     public Visit update(Visit visit) {
-        return visitDAO.update(visit);
+//        return visitDAO.update(visit);
+        return new Visit();
     }
 
-    @Transactional
     @Override
     public void delete(Integer id) {
-        visitDAO.delete(id);
+        visitDAO.deleteById(id);
     }
 
     @Override
     public Visit findById(Integer id) {
-        return visitDAO.findById(id);
+        return visitDAO.getReferenceById(id);
     }
 
     @Override
     public List<Visit> findAllVisits() {
-        return visitDAO.findAllVisits();
+        return visitDAO.findAll();
     }
 
     @Override
     public Visitor findVisitor(Integer id) {
-        return visitorDAO.findById(id);
+        return visitorDAO.getReferenceById(id);
     }
 
 }

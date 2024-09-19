@@ -1,5 +1,6 @@
 package com.ceyentra.visitor_management_system.rest;
 
+import com.ceyentra.visitor_management_system.entity.Card;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.VisitService;
@@ -27,11 +28,18 @@ public class VisitRestController {
 
     @PostMapping("/visits/{visitorId}")
     public Visit saveVisit(@PathVariable int visitorId, @RequestBody Visit visit){
-        visit.setVisitId(0);
-        visit.setVisitor(visitService.findVisitor(visitorId));
-        visit.setVisitDate(LocalDate.now());
-        visit.setCheckIn(LocalTime.now());
-        return visitService.save(visit);
+        Card availableCard = visitService.findAvailableCard();
+        if (availableCard == null){
+            throw new RuntimeException("All available cards have been assigned to visitors.");
+        }else {
+            visit.setVisitId(0);
+            visit.setVisitor(visitService.findVisitor(visitorId));
+            visit.setCard(availableCard);
+            visit.setVisitDate(LocalDate.now());
+            visit.setCheckIn(LocalTime.now());
+            return visitService.save(visit);
+        }
+
     }
 
     @PutMapping("/visits/{visitId}")

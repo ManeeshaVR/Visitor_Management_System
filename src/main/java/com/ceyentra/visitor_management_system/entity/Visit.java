@@ -24,6 +24,10 @@ public class Visit {
     @JoinColumn(name = "visitor_id", nullable = false)
     private Visitor visitor;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id", nullable = false)
+    private Card card;
+
     @Column(name = "visit_date", nullable = false)
     private LocalDate visitDate;
 
@@ -35,6 +39,5 @@ public class Visit {
 
     @Column(name = "purpose", length = 255, nullable = false)
     private String purpose;
-
-
+    
 }

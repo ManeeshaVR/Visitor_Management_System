@@ -20,7 +20,7 @@ public class Card {
     @Column(name = "card_no", nullable = false, unique = true)
     private Integer cardNo;
 
-    @Column(name = "status", nullable = false, unique = true)
+    @Column(name = "status", nullable = false)
     private String status;
 
 }

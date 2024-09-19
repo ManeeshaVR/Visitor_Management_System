@@ -39,5 +39,5 @@ public class Visit {
 
     @Column(name = "purpose", length = 255, nullable = false)
     private String purpose;
-    
+
 }

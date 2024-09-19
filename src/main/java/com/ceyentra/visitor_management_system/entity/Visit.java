@@ -1,5 +1,7 @@
 package com.ceyentra.visitor_management_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,7 @@ import java.time.LocalTime;
 @Data
 @Table(name = "visit")
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Visit {
 
     @Id
@@ -22,10 +25,12 @@ public class Visit {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "visitor_id", nullable = false)
+    @JsonIgnore
     private Visitor visitor;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "card_id", nullable = false)
+    @JsonIgnore
     private Card card;
 
     @Column(name = "visit_date", nullable = false)

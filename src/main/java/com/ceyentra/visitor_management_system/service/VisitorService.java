@@ -6,13 +6,15 @@ import java.util.List;
 
 public interface VisitorService {
 
-    Visitor save(Visitor visitor);
+    Visitor saveVisitor(Visitor visitor);
 
-    Visitor update(Visitor visitor);
+    Visitor updateVisitor(Visitor visitor);
 
-    void delete(Integer id);
+    void deleteVisitor(Integer id);
 
-    Visitor findById(Integer id);
+    Visitor findVisitorById(Integer id);
+
+    Visitor findVisitorByNic(String nic);
 
     List<Visitor> findAllVisitors();
 

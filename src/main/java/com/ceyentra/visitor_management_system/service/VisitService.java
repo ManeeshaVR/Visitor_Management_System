@@ -8,15 +8,17 @@ import java.util.List;
 
 public interface VisitService {
 
-    Visit save(Visit visit);
+    Visit saveVisit(Visit visit);
 
-    Visit findById(Integer id);
+    Visit updateVisit(Visit visit);
+
+    void deleteVisit(Integer id);
+
+    Visit findVisitById(Integer id);
 
     List<Visit> findAllVisits();
 
-    Visit update(Visit visit);
-
-    void delete(Integer id);
+    List<Visit> findVisitByVisitorNic(String nic);
 
     Visitor findVisitor(Integer id);
 

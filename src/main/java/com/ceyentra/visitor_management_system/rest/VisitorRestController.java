@@ -45,6 +45,11 @@ public class VisitorRestController {
         return visitorService.findById(visitorId);
     }
 
+    @GetMapping("/visitors/nic/{nic}")
+    public Visitor getVisitorByNic(@PathVariable String nic){
+        return visitorService.findByNic(nic);
+    }
+
     @GetMapping("/visitors")
     public List<Visitor> getAllVisitors(){
         return visitorService.findAllVisitors();

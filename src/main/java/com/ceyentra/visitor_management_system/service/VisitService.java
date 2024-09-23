@@ -20,6 +20,8 @@ public interface VisitService {
 
     List<Visit> findVisitByVisitorNic(String nic);
 
+    List<Visit> findOverdueVisits();
+
     Visitor findVisitor(Integer id);
 
     Card findAvailableCard();

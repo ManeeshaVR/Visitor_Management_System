@@ -76,6 +76,11 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
+    public List<Visit> findOverdueVisits() {
+        return visitDAO.findOverdueVisits();
+    }
+
+    @Override
     public Visitor findVisitor(Integer id) {
         return visitorDAO.getReferenceById(id);
     }

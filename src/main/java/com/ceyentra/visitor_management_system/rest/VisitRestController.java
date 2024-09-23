@@ -65,4 +65,9 @@ public class VisitRestController {
         return visitService.findVisitByVisitorNic(visitorNic);
     }
 
+    @GetMapping("/visits/overdue")
+    public List<Visit> getOverdueVisits(){
+        return visitService.findOverdueVisits();
+    }
+
 }

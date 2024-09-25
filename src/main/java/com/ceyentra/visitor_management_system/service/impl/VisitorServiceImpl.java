@@ -1,8 +1,6 @@
 package com.ceyentra.visitor_management_system.service.impl;
 
 import com.ceyentra.visitor_management_system.dao.VisitorDAO;
-import com.ceyentra.visitor_management_system.entity.Card;
-import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;

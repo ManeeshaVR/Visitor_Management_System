@@ -30,12 +30,10 @@ public class Visit {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", nullable = false)
-    @JsonIgnore
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "card_id", nullable = false)
-    @JsonIgnore
     private Card card;
 
     @Column(name = "visit_date", nullable = false)

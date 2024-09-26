@@ -1,9 +1,11 @@
 package com.ceyentra.visitor_management_system.service.impl;
 
 import com.ceyentra.visitor_management_system.dao.CardDAO;
+import com.ceyentra.visitor_management_system.dao.EmployeeDAO;
 import com.ceyentra.visitor_management_system.dao.VisitDAO;
 import com.ceyentra.visitor_management_system.dao.VisitorDAO;
 import com.ceyentra.visitor_management_system.entity.Card;
+import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.VisitService;
@@ -22,12 +24,14 @@ public class VisitServiceImpl implements VisitService {
     private VisitDAO visitDAO;
     private VisitorDAO visitorDAO;
     private CardDAO cardDAO;
+    private EmployeeDAO employeeDAO;
 
     @Autowired
-    public VisitServiceImpl(VisitDAO visitDAO, VisitorDAO visitorDAO, CardDAO cardDAO) {
+    public VisitServiceImpl(VisitDAO visitDAO, VisitorDAO visitorDAO, CardDAO cardDAO, EmployeeDAO employeeDAO) {
         this.visitDAO=visitDAO;
         this.visitorDAO = visitorDAO;
         this.cardDAO = cardDAO;
+        this.employeeDAO = employeeDAO;
     }
 
     @Override
@@ -88,6 +92,11 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public Card findAvailableCard() {
         return cardDAO.findAvailableCard();
+    }
+
+    @Override
+    public Employee findEmployee(Integer id) {
+        return employeeDAO.getReferenceById(id);
     }
 
 }

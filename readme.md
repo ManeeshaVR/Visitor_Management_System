@@ -22,3 +22,7 @@ The **Visitor Management System** is designed to streamline the process of regis
 - Maven
 - IDE (IntelliJ IDEA, Eclipse, etc.)
 
+## Document
+
+- **Entity Relationship Diagram:** [https://drive.google.com/file/d/1OIOq2Vyx3CFQhug1uRsPeRKrEsig3z-4/view?usp=sharing](https://drive.google.com/file/d/1OIOq2Vyx3CFQhug1uRsPeRKrEsig3z-4/view?usp=sharing)
+- **Postman API Documentation:** []()

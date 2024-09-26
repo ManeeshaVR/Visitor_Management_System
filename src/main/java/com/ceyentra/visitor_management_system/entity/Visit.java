@@ -29,6 +29,11 @@ public class Visit {
     private Visitor visitor;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", nullable = false)
+    @JsonIgnore
+    private Employee employee;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "card_id", nullable = false)
     @JsonIgnore
     private Card card;

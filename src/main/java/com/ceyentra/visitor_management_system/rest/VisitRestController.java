@@ -1,6 +1,7 @@
 package com.ceyentra.visitor_management_system.rest;
 
 import com.ceyentra.visitor_management_system.entity.Card;
+import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.VisitService;
@@ -27,17 +28,24 @@ public class VisitRestController {
         return "Hello Visit";
     }
 
-    @PostMapping("/visits/{visitorId}")
-    public Visit saveVisit(@PathVariable int visitorId, @RequestBody Visit visit){
+    @PostMapping("/visits/{visitorId}/{employeeId}")
+    public Visit saveVisit(@PathVariable int visitorId, @PathVariable int employeeId, @RequestBody String purpose){
         Card availableCard = visitService.findAvailableCard();
+        Employee employee = visitService.findEmployee(employeeId);
+        Visit visit = new Visit();
         if (availableCard == null){
             throw new RuntimeException("All available cards have been assigned to visitors.");
-        }else {
+        }else if(employee == null){
+            throw new RuntimeException("No employee exist with employee ID : " + employee.getId());
+        }
+        else {
             visit.setVisitId(0);
             visit.setVisitor(visitService.findVisitor(visitorId));
+            visit.setEmployee(employee);
             visit.setCard(availableCard);
             visit.setVisitDate(LocalDate.now());
             visit.setCheckIn(LocalTime.now());
+            visit.setPurpose(purpose);
             return visitService.saveVisit(visit);
         }
     }

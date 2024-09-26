@@ -1,5 +1,6 @@
 package com.ceyentra.visitor_management_system.rest;
 
+import com.ceyentra.visitor_management_system.entity.Building;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,11 @@ public class EmployeeRestController {
         return "Hello Employee";
     }
 
-    @PostMapping("/employees")
-    public Employee saveEmployee(@RequestBody Employee employee){
+    @PostMapping("/employees/{buildingId}")
+    public Employee saveEmployee(@PathVariable int buildingId, @RequestBody Employee employee){
+        Building building = employeeService.findBuilding(buildingId);
         employee.setId(0);
+        employee.setBuilding(building);
         return employeeService.saveEmployee(employee);
     }
 

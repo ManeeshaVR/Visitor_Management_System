@@ -1,6 +1,7 @@
 package com.ceyentra.visitor_management_system.entity;
 
 import com.ceyentra.visitor_management_system.entity.enums.Floor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "building")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Building {
 
     @Id

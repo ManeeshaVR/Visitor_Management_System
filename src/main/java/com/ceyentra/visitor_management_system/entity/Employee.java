@@ -35,7 +35,7 @@ public class Employee {
     @Column(name = "status", nullable = false, length = 10)
     private String status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "building_id", nullable = false)
     private Building building;
 

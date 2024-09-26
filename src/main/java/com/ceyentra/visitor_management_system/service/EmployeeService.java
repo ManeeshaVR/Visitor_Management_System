@@ -1,5 +1,6 @@
 package com.ceyentra.visitor_management_system.service;
 
+import com.ceyentra.visitor_management_system.entity.Building;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 
@@ -20,5 +21,7 @@ public interface EmployeeService {
     List<Employee> findExistingEmployees();
 
     List<Employee> findExistedEmployees();
+
+    Building findBuilding(Integer id);
 
 }

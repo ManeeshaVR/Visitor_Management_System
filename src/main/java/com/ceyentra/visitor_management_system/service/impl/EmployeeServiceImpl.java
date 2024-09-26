@@ -1,6 +1,8 @@
 package com.ceyentra.visitor_management_system.service.impl;
 
+import com.ceyentra.visitor_management_system.dao.BuildingDAO;
 import com.ceyentra.visitor_management_system.dao.EmployeeDAO;
+import com.ceyentra.visitor_management_system.entity.Building;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.EmployeeService;
@@ -17,10 +19,12 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeDAO employeeDAO;
+    private BuildingDAO buildingDAO;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeDAO employeeDAO){
+    public EmployeeServiceImpl(EmployeeDAO employeeDAO, BuildingDAO buildingDAO){
         this.employeeDAO = employeeDAO;
+        this.buildingDAO = buildingDAO;
     }
 
 
@@ -65,5 +69,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> findExistedEmployees() {
         return employeeDAO.findDeActiveEmployees();
+    }
+
+    @Override
+    public Building findBuilding(Integer id) {
+        return buildingDAO.getReferenceById(id);
     }
 }

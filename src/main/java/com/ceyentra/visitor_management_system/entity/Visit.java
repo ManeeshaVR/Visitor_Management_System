@@ -25,7 +25,6 @@ public class Visit {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "visitor_id", nullable = false)
-    @JsonIgnore
     private Visitor visitor;
 
     @ManyToOne(fetch = FetchType.EAGER)

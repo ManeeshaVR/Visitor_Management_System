@@ -4,6 +4,7 @@ import com.ceyentra.visitor_management_system.entity.Card;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
+import com.ceyentra.visitor_management_system.exception.NotFoundException;
 import com.ceyentra.visitor_management_system.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class VisitRestController {
         Employee employee = visitService.findEmployee(employeeId);
         Visit visit = new Visit();
         if (availableCard == null){
-            throw new RuntimeException("All available cards have been assigned to visitors.");
+            throw new NotFoundException("All available cards have been assigned to visitors.");
         }else if(employee == null){
-            throw new RuntimeException("No employee exist with employee ID : " + employee.getId());
+            throw new NotFoundException("Employee not found with employee ID : " + employee.getId());
         }
         else {
             visit.setVisitId(0);
@@ -52,15 +53,22 @@ public class VisitRestController {
 
     @PutMapping("/visits/{visitId}")
     public Visit updateVisit(@PathVariable int visitId){
-        Visit visit = visitService.findVisitById(visitId);
-        System.out.println(visit);
-        visit.setCheckOut(LocalTime.now());
-        return visitService.updateVisit(visit);
+        if (visitService.existsVisit(visitId)){
+            Visit visit = visitService.findVisitById(visitId);
+            visit.setCheckOut(LocalTime.now());
+            return visitService.updateVisit(visit);
+        }else {
+            throw new NotFoundException("Visit not found with visit ID : " + visitId);
+        }
     }
 
     @GetMapping("/visits/{visitId}")
     public Visit getVisit(@PathVariable int visitId){
-        return visitService.findVisitById(visitId);
+        if (visitService.existsVisit(visitId)){
+            return visitService.findVisitById(visitId);
+        }else {
+            throw new NotFoundException("Visit not found with visit ID : " + visitId);
+        }
     }
 
     @GetMapping("/visits")

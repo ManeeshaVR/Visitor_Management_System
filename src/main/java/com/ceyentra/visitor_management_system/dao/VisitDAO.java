@@ -18,4 +18,6 @@ public interface VisitDAO extends JpaRepository<Visit, Integer> {
     @Query("SELECT v FROM Visit v WHERE v.checkOut IS NULL AND v.visitDate != CURRENT_DATE")
     List<Visit> findOverdueVisits();
 
+    boolean existsByVisitId(Integer id);
+
 }

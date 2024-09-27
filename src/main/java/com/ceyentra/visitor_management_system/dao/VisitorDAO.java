@@ -9,4 +9,6 @@ public interface VisitorDAO extends JpaRepository<Visitor, Integer> {
 
     Visitor findByNic(String nic);
 
+    boolean existsByVisitorId(Integer id);
+
 }

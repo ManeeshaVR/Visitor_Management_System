@@ -16,4 +16,6 @@ public interface EmployeeDAO extends JpaRepository<Employee, Integer> {
     @Query("SELECT e FROM Employee e WHERE e.status = 'DEACTIVE'")
     List<Employee> findDeActiveEmployees();
 
+    boolean existsById(Integer id);
+
 }

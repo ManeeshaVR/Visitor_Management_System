@@ -57,4 +57,9 @@ public class VisitorServiceImpl implements VisitorService {
         return visitorDAO.findAll();
     }
 
+    @Override
+    public boolean existsVisitor(Integer id) {
+        return visitorDAO.existsByVisitorId(id);
+    }
+
 }

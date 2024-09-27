@@ -75,4 +75,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Building findBuilding(Integer id) {
         return buildingDAO.getReferenceById(id);
     }
+
+    @Override
+    public boolean existsEmployee(Integer id) {
+        return employeeDAO.existsById(id);
+    }
+
+    @Override
+    public boolean existsBuilding(Integer id) {
+        return buildingDAO.existsByBuildingId(id);
+    }
 }

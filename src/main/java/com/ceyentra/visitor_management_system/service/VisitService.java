@@ -29,4 +29,10 @@ public interface VisitService {
 
     Employee findEmployee(Integer id);
 
+    boolean existsVisit(Integer id);
+
+    boolean existsVisitor(Integer id);
+
+    boolean existsEmployee(Integer id);
+
 }

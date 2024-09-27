@@ -18,4 +18,6 @@ public interface VisitorService {
 
     List<Visitor> findAllVisitors();
 
+    boolean existsVisitor(Integer id);
+
 }

@@ -24,4 +24,8 @@ public interface EmployeeService {
 
     Building findBuilding(Integer id);
 
+    boolean existsEmployee(Integer id);
+
+    boolean existsBuilding(Integer id);
+
 }

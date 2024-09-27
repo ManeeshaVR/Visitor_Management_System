@@ -99,4 +99,19 @@ public class VisitServiceImpl implements VisitService {
         return employeeDAO.getReferenceById(id);
     }
 
+    @Override
+    public boolean existsVisit(Integer id) {
+        return visitDAO.existsByVisitId(id);
+    }
+
+    @Override
+    public boolean existsVisitor(Integer id) {
+        return visitorDAO.existsByVisitorId(id);
+    }
+
+    @Override
+    public boolean existsEmployee(Integer id) {
+        return employeeDAO.existsById(id);
+    }
+
 }

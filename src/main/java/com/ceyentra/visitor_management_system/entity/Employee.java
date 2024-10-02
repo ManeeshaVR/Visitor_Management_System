@@ -1,6 +1,6 @@
 package com.ceyentra.visitor_management_system.entity;
 
-import com.ceyentra.visitor_management_system.entity.enums.Floor;
+import com.ceyentra.visitor_management_system.enums.Floor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;

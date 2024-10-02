@@ -1,22 +1,23 @@
 package com.ceyentra.visitor_management_system.service;
 
+import com.ceyentra.visitor_management_system.dto.VisitorDTO;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 
 import java.util.List;
 
 public interface VisitorService {
 
-    Visitor saveVisitor(Visitor visitor);
+    VisitorDTO saveVisitor(VisitorDTO visitorDTO);
 
-    Visitor updateVisitor(Visitor visitor);
+    VisitorDTO updateVisitor(VisitorDTO visitorDTO);
 
     void deleteVisitor(Integer id);
 
-    Visitor findVisitorById(Integer id);
+    VisitorDTO findVisitorById(Integer id);
 
-    Visitor findVisitorByNic(String nic);
+    VisitorDTO findVisitorByNic(String nic);
 
-    List<Visitor> findAllVisitors();
+    List<VisitorDTO> findAllVisitors();
 
     boolean existsVisitor(Integer id);
 

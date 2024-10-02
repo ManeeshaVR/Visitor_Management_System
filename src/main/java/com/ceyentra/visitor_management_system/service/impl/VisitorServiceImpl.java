@@ -1,8 +1,10 @@
 package com.ceyentra.visitor_management_system.service.impl;
 
 import com.ceyentra.visitor_management_system.dao.VisitorDAO;
+import com.ceyentra.visitor_management_system.dto.VisitorDTO;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.VisitorService;
+import com.ceyentra.visitor_management_system.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,26 +17,28 @@ import java.util.Optional;
 public class VisitorServiceImpl implements VisitorService {
 
     private VisitorDAO visitorDAO;
+    private final Mapper mapper;
 
     @Autowired
-    public VisitorServiceImpl(VisitorDAO visitorDAO) {
+    public VisitorServiceImpl(VisitorDAO visitorDAO, Mapper mapper) {
         this.visitorDAO = visitorDAO;
+        this.mapper = mapper;
     }
 
     @Override
-    public Visitor saveVisitor(Visitor visitor) {
-        return visitorDAO.save(visitor);
+    public VisitorDTO saveVisitor(VisitorDTO visitorDTO) {
+        return mapper.toVisitorDTO(visitorDAO.save(mapper.toVisitorEntity(visitorDTO)));
     }
 
     @Override
-    public Visitor updateVisitor(Visitor visitor) {
-        Optional<Visitor> tempVisitor = visitorDAO.findById(visitor.getVisitorId());
-        tempVisitor.get().setName(visitor.getName());
-        tempVisitor.get().setEmail(visitor.getEmail());
-        tempVisitor.get().setNic(visitor.getNic());
-        tempVisitor.get().setPhoneNo(visitor.getPhoneNo());
+    public VisitorDTO updateVisitor(VisitorDTO visitorDTO) {
+        Optional<Visitor> tempVisitor = visitorDAO.findById(visitorDTO.getVisitorId());
+        tempVisitor.get().setName(visitorDTO.getName());
+        tempVisitor.get().setEmail(visitorDTO.getEmail());
+        tempVisitor.get().setNic(visitorDTO.getNic());
+        tempVisitor.get().setPhoneNo(visitorDTO.getPhoneNo());
 
-        return visitorDAO.getReferenceById(visitor.getVisitorId());
+        return mapper.toVisitorDTO(visitorDAO.getReferenceById(visitorDTO.getVisitorId()));
     }
 
     @Override
@@ -43,18 +47,18 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
-    public Visitor findVisitorById(Integer id) {
-        return visitorDAO.getReferenceById(id);
+    public VisitorDTO findVisitorById(Integer id) {
+        return mapper.toVisitorDTO(visitorDAO.getReferenceById(id));
     }
 
     @Override
-    public Visitor findVisitorByNic(String nic) {
-        return visitorDAO.findByNic(nic);
+    public VisitorDTO findVisitorByNic(String nic) {
+        return mapper.toVisitorDTO(visitorDAO.findByNic(nic));
     }
 
     @Override
-    public List<Visitor> findAllVisitors() {
-        return visitorDAO.findAll();
+    public List<VisitorDTO> findAllVisitors() {
+        return mapper.toVisitorDTOList(visitorDAO.findAll());
     }
 
     @Override

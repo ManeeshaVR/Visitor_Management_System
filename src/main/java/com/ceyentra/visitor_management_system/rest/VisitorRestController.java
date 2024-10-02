@@ -1,5 +1,6 @@
 package com.ceyentra.visitor_management_system.rest;
 
+import com.ceyentra.visitor_management_system.dto.VisitorDTO;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.exception.NotFoundException;
 import com.ceyentra.visitor_management_system.service.VisitorService;
@@ -25,13 +26,13 @@ public class VisitorRestController {
     }
 
     @PostMapping("/visitors")
-    public Visitor saveVisitor(@RequestBody Visitor visitor){
+    public VisitorDTO saveVisitor(@RequestBody VisitorDTO visitor){
         visitor.setVisitorId(0);
         return visitorService.saveVisitor(visitor);
     }
 
     @PutMapping("/visitors/{visitorId}")
-    public Visitor updateVisitor(@PathVariable int visitorId, @RequestBody Visitor visitor){
+    public VisitorDTO updateVisitor(@PathVariable int visitorId, @RequestBody VisitorDTO visitor){
         if (visitorService.existsVisitor(visitorId)){
             visitor.setVisitorId(visitorId);
             return visitorService.updateVisitor(visitor);
@@ -50,7 +51,7 @@ public class VisitorRestController {
     }
 
     @GetMapping("/visitors/{visitorId}")
-    public Visitor getVisitor(@PathVariable int visitorId){
+    public VisitorDTO getVisitor(@PathVariable int visitorId){
         if (visitorService.existsVisitor(visitorId)){
             return visitorService.findVisitorById(visitorId);
         }else {
@@ -60,8 +61,8 @@ public class VisitorRestController {
     }
 
     @GetMapping("/visitors/nic/{nic}")
-    public Visitor getVisitorByNic(@PathVariable String nic){
-        Visitor visitorByNic = visitorService.findVisitorByNic(nic);
+    public VisitorDTO getVisitorByNic(@PathVariable String nic){
+        VisitorDTO visitorByNic = visitorService.findVisitorByNic(nic);
         if (visitorByNic != null){
             return visitorByNic;
         }else {
@@ -70,7 +71,7 @@ public class VisitorRestController {
     }
 
     @GetMapping("/visitors")
-    public List<Visitor> getAllVisitors(){
+    public List<VisitorDTO> getAllVisitors(){
         return visitorService.findAllVisitors();
     }
 

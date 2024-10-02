@@ -1,28 +1,27 @@
 package com.ceyentra.visitor_management_system.service;
 
-import com.ceyentra.visitor_management_system.entity.Building;
-import com.ceyentra.visitor_management_system.entity.Employee;
-import com.ceyentra.visitor_management_system.entity.Visitor;
+import com.ceyentra.visitor_management_system.dto.BuildingDTO;
+import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    Employee saveEmployee(Employee employee);
+    EmployeeDTO saveEmployee(EmployeeDTO employee);
 
-    Employee updateEmployee(Employee employee);
+    EmployeeDTO updateEmployee(EmployeeDTO employee);
 
     void deleteEmployee(Integer id);
 
-    Employee findEmployeeById(Integer id);
+    EmployeeDTO findEmployeeById(Integer id);
 
-    List<Employee> findAllVisitors();
+    List<EmployeeDTO> findAllVisitors();
 
-    List<Employee> findExistingEmployees();
+    List<EmployeeDTO> findExistingEmployees();
 
-    List<Employee> findExistedEmployees();
+    List<EmployeeDTO> findExistedEmployees();
 
-    Building findBuilding(Integer id);
+    BuildingDTO findBuilding(Integer id);
 
     boolean existsEmployee(Integer id);
 

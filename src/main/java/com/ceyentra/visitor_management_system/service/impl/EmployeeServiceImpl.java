@@ -2,12 +2,12 @@ package com.ceyentra.visitor_management_system.service.impl;
 
 import com.ceyentra.visitor_management_system.dao.BuildingDAO;
 import com.ceyentra.visitor_management_system.dao.EmployeeDAO;
-import com.ceyentra.visitor_management_system.entity.Building;
+import com.ceyentra.visitor_management_system.dto.BuildingDTO;
+import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
 import com.ceyentra.visitor_management_system.entity.Employee;
-import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.EmployeeService;
+import com.ceyentra.visitor_management_system.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,29 +20,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeDAO employeeDAO;
     private BuildingDAO buildingDAO;
+    private final Mapper mapper;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeDAO employeeDAO, BuildingDAO buildingDAO){
+    public EmployeeServiceImpl(EmployeeDAO employeeDAO, BuildingDAO buildingDAO, Mapper mapper){
         this.employeeDAO = employeeDAO;
         this.buildingDAO = buildingDAO;
+        this.mapper = mapper;
     }
 
 
     @Override
-    public Employee saveEmployee(Employee employee) {
-        return employeeDAO.save(employee);
+    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+        return mapper.toEmployeeDTO(employeeDAO.save(mapper.toEmployeeEntity(employeeDTO)));
     }
 
     @Override
-    public Employee updateEmployee(Employee employee) {
-        Optional<Employee> existingEmployee = employeeDAO.findById(employee.getId());
-        existingEmployee.get().setName(employee.getName());
-        existingEmployee.get().setPhoneNo(employee.getPhoneNo());
-        existingEmployee.get().setEmail(employee.getEmail());
-        existingEmployee.get().setPosition(employee.getPosition());
-        existingEmployee.get().setStatus(employee.getStatus());
+    public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
+        Optional<Employee> existingEmployee = employeeDAO.findById(employeeDTO.getId());
+        existingEmployee.get().setName(employeeDTO.getName());
+        existingEmployee.get().setPhoneNo(employeeDTO.getPhoneNo());
+        existingEmployee.get().setEmail(employeeDTO.getEmail());
+        existingEmployee.get().setPosition(employeeDTO.getPosition());
+        existingEmployee.get().setStatus(employeeDTO.getStatus());
 
-        return employeeDAO.getReferenceById(employee.getId());
+        return mapper.toEmployeeDTO(employeeDAO.getReferenceById(employeeDTO.getId()));
     }
 
     @Override
@@ -52,28 +54,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findEmployeeById(Integer id) {
-        return employeeDAO.getReferenceById(id);
+    public EmployeeDTO findEmployeeById(Integer id) {
+        return mapper.toEmployeeDTO(employeeDAO.getReferenceById(id));
     }
 
     @Override
-    public List<Employee> findAllVisitors() {
-        return employeeDAO.findAll();
+    public List<EmployeeDTO> findAllVisitors() {
+        return mapper.toEmployeeDTOList(employeeDAO.findAll());
     }
 
     @Override
-    public List<Employee> findExistingEmployees() {
-        return employeeDAO.findActiveEmployees();
+    public List<EmployeeDTO> findExistingEmployees() {
+        return mapper.toEmployeeDTOList(employeeDAO.findActiveEmployees());
     }
 
     @Override
-    public List<Employee> findExistedEmployees() {
-        return employeeDAO.findDeActiveEmployees();
+    public List<EmployeeDTO> findExistedEmployees() {
+        return mapper.toEmployeeDTOList(employeeDAO.findDeActiveEmployees());
     }
 
     @Override
-    public Building findBuilding(Integer id) {
-        return buildingDAO.getReferenceById(id);
+    public BuildingDTO findBuilding(Integer id) {
+        return mapper.toBuildingDTO(buildingDAO.getReferenceById(id));
     }
 
     @Override

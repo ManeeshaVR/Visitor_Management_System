@@ -1,5 +1,7 @@
 package com.ceyentra.visitor_management_system.rest;
 
+import com.ceyentra.visitor_management_system.dto.BuildingDTO;
+import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
 import com.ceyentra.visitor_management_system.entity.Building;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.exception.NotFoundException;
@@ -27,8 +29,8 @@ public class EmployeeRestController {
     }
 
     @PostMapping("/employees/{buildingId}")
-    public Employee saveEmployee(@PathVariable int buildingId, @RequestBody Employee employee){
-        Building building = employeeService.findBuilding(buildingId);
+    public EmployeeDTO saveEmployee(@PathVariable int buildingId, @RequestBody EmployeeDTO employee){
+        BuildingDTO building = employeeService.findBuilding(buildingId);
         if (building != null) {
             employee.setId(0);
             employee.setBuilding(building);
@@ -39,7 +41,7 @@ public class EmployeeRestController {
     }
 
     @PutMapping("/employees/{employeeId}")
-    public Employee updateEmployee(@PathVariable int employeeId, @RequestBody Employee employee){
+    public EmployeeDTO updateEmployee(@PathVariable int employeeId, @RequestBody EmployeeDTO employee){
         if (employeeService.existsEmployee(employeeId)) {
             employee.setId(employeeId);
             return employeeService.updateEmployee(employee);
@@ -59,7 +61,7 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/employees/{employeeId}")
-    public Employee getEmployee(@PathVariable int employeeId){
+    public EmployeeDTO getEmployee(@PathVariable int employeeId){
         if (employeeService.existsEmployee(employeeId)) {
             return employeeService.findEmployeeById(employeeId);
         }else {
@@ -68,17 +70,17 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees(){
+    public List<EmployeeDTO> getAllEmployees(){
         return employeeService.findAllVisitors();
     }
 
     @GetMapping("/employees/active")
-    public List<Employee> getAllActiveEmployees(){
+    public List<EmployeeDTO> getAllActiveEmployees(){
         return employeeService.findExistingEmployees();
     }
 
     @GetMapping("/employees/deactive")
-    public List<Employee> getAllDeActiveEmployees(){
+    public List<EmployeeDTO> getAllDeActiveEmployees(){
         return employeeService.findExistedEmployees();
     }
 

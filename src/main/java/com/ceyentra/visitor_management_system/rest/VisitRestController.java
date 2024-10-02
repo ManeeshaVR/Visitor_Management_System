@@ -1,5 +1,8 @@
 package com.ceyentra.visitor_management_system.rest;
 
+import com.ceyentra.visitor_management_system.dto.CardDTO;
+import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
+import com.ceyentra.visitor_management_system.dto.VisitDTO;
 import com.ceyentra.visitor_management_system.entity.Card;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
@@ -30,10 +33,10 @@ public class VisitRestController {
     }
 
     @PostMapping("/visits/{visitorId}/{employeeId}")
-    public Visit saveVisit(@PathVariable int visitorId, @PathVariable int employeeId, @RequestBody String purpose){
-        Card availableCard = visitService.findAvailableCard();
-        Employee employee = visitService.findEmployee(employeeId);
-        Visit visit = new Visit();
+    public VisitDTO saveVisit(@PathVariable int visitorId, @PathVariable int employeeId, @RequestBody String purpose){
+        CardDTO availableCard = visitService.findAvailableCard();
+        EmployeeDTO employee = visitService.findEmployee(employeeId);
+        VisitDTO visit = new VisitDTO();
         if (availableCard == null){
             throw new NotFoundException("All available cards have been assigned to visitors.");
         }else if(employee == null){
@@ -52,9 +55,9 @@ public class VisitRestController {
     }
 
     @PutMapping("/visits/{visitId}")
-    public Visit updateVisit(@PathVariable int visitId){
+    public VisitDTO updateVisit(@PathVariable int visitId){
         if (visitService.existsVisit(visitId)){
-            Visit visit = visitService.findVisitById(visitId);
+            VisitDTO visit = visitService.findVisitById(visitId);
             visit.setCheckOut(LocalTime.now());
             return visitService.updateVisit(visit);
         }else {
@@ -63,7 +66,7 @@ public class VisitRestController {
     }
 
     @GetMapping("/visits/{visitId}")
-    public Visit getVisit(@PathVariable int visitId){
+    public VisitDTO getVisit(@PathVariable int visitId){
         if (visitService.existsVisit(visitId)){
             return visitService.findVisitById(visitId);
         }else {
@@ -72,17 +75,17 @@ public class VisitRestController {
     }
 
     @GetMapping("/visits")
-    public List<Visit> getAllVisits(){
+    public List<VisitDTO> getAllVisits(){
         return visitService.findAllVisits();
     }
 
     @GetMapping("/visits/nic/{visitorNic}")
-    public List<Visit> getVisitsByNic(@PathVariable String visitorNic){
+    public List<VisitDTO> getVisitsByNic(@PathVariable String visitorNic){
         return visitService.findVisitByVisitorNic(visitorNic);
     }
 
     @GetMapping("/visits/overdue")
-    public List<Visit> getOverdueVisits(){
+    public List<VisitDTO> getOverdueVisits(){
         return visitService.findOverdueVisits();
     }
 

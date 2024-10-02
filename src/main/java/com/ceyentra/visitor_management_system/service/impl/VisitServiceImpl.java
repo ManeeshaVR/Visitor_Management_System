@@ -4,13 +4,17 @@ import com.ceyentra.visitor_management_system.dao.CardDAO;
 import com.ceyentra.visitor_management_system.dao.EmployeeDAO;
 import com.ceyentra.visitor_management_system.dao.VisitDAO;
 import com.ceyentra.visitor_management_system.dao.VisitorDAO;
+import com.ceyentra.visitor_management_system.dto.CardDTO;
+import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
+import com.ceyentra.visitor_management_system.dto.VisitDTO;
+import com.ceyentra.visitor_management_system.dto.VisitorDTO;
 import com.ceyentra.visitor_management_system.entity.Card;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
 import com.ceyentra.visitor_management_system.service.VisitService;
+import com.ceyentra.visitor_management_system.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,38 +29,40 @@ public class VisitServiceImpl implements VisitService {
     private VisitorDAO visitorDAO;
     private CardDAO cardDAO;
     private EmployeeDAO employeeDAO;
+    private final Mapper mapper;
 
     @Autowired
-    public VisitServiceImpl(VisitDAO visitDAO, VisitorDAO visitorDAO, CardDAO cardDAO, EmployeeDAO employeeDAO) {
+    public VisitServiceImpl(VisitDAO visitDAO, VisitorDAO visitorDAO, CardDAO cardDAO, EmployeeDAO employeeDAO, Mapper mapper) {
         this.visitDAO=visitDAO;
         this.visitorDAO = visitorDAO;
         this.cardDAO = cardDAO;
         this.employeeDAO = employeeDAO;
+        this.mapper = mapper;
     }
 
     @Override
-    public Visit saveVisit(Visit visit) {
-        Optional<Card> tempCard = cardDAO.findById(visit.getCard().getCardId());
-        tempCard.get().setCardNo(visit.getCard().getCardNo());
+    public VisitDTO saveVisit(VisitDTO visitDTO) {
+        Optional<Card> tempCard = cardDAO.findById(visitDTO.getCard().getCardId());
+        tempCard.get().setCardNo(visitDTO.getCard().getCardNo());
         tempCard.get().setStatus("Not Available");
-        return visitDAO.save(visit);
+        return mapper.toVisitDTO(visitDAO.save(mapper.toVisitEntity(visitDTO)));
     }
 
     @Override
-    public Visit updateVisit(Visit visit) {
-        Optional<Visit> tempVisit = visitDAO.findById(visit.getVisitId());
-        tempVisit.get().setVisitor(visit.getVisitor());
-        tempVisit.get().setCard(visit.getCard());
-        tempVisit.get().setVisitDate(visit.getVisitDate());
-        tempVisit.get().setCheckIn(visit.getCheckIn());
-        tempVisit.get().setCheckOut(visit.getCheckOut());
-        tempVisit.get().setPurpose(visit.getPurpose());
+    public VisitDTO updateVisit(VisitDTO visitDTO) {
+        Optional<Visit> tempVisit = visitDAO.findById(visitDTO.getVisitId());
+        tempVisit.get().setVisitor(mapper.toVisitorEntity(visitDTO.getVisitor()));
+        tempVisit.get().setCard(mapper.toCardEntity(visitDTO.getCard()));
+        tempVisit.get().setVisitDate(visitDTO.getVisitDate());
+        tempVisit.get().setCheckIn(visitDTO.getCheckIn());
+        tempVisit.get().setCheckOut(visitDTO.getCheckOut());
+        tempVisit.get().setPurpose(visitDTO.getPurpose());
 
-        Optional<Card> tempCard = cardDAO.findById(visit.getCard().getCardId());
-        tempCard.get().setCardNo(visit.getCard().getCardNo());
+        Optional<Card> tempCard = cardDAO.findById(visitDTO.getCard().getCardId());
+        tempCard.get().setCardNo(visitDTO.getCard().getCardNo());
         tempCard.get().setStatus("Available");
 
-        return visitDAO.getReferenceById(visit.getVisitId());
+        return mapper.toVisitDTO(visitDAO.getReferenceById(visitDTO.getVisitId()));
     }
 
     @Override
@@ -65,38 +71,38 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public Visit findVisitById(Integer id) {
-        return visitDAO.getReferenceById(id);
+    public VisitDTO findVisitById(Integer id) {
+        return mapper.toVisitDTO(visitDAO.getReferenceById(id));
     }
 
     @Override
-    public List<Visit> findAllVisits() {
-        return visitDAO.findAll();
+    public List<VisitDTO> findAllVisits() {
+        return mapper.toVisitDTOList(visitDAO.findAll());
     }
 
     @Override
-    public List<Visit> findVisitByVisitorNic(String nic) {
-        return visitDAO.findVisitsByVisitorNic(nic);
+    public List<VisitDTO> findVisitByVisitorNic(String nic) {
+        return mapper.toVisitDTOList(visitDAO.findVisitsByVisitorNic(nic));
     }
 
     @Override
-    public List<Visit> findOverdueVisits() {
-        return visitDAO.findOverdueVisits();
+    public List<VisitDTO> findOverdueVisits() {
+        return mapper.toVisitDTOList(visitDAO.findOverdueVisits());
     }
 
     @Override
-    public Visitor findVisitor(Integer id) {
-        return visitorDAO.getReferenceById(id);
+    public VisitorDTO findVisitor(Integer id) {
+        return mapper.toVisitorDTO(visitorDAO.getReferenceById(id));
     }
 
     @Override
-    public Card findAvailableCard() {
-        return cardDAO.findAvailableCard();
+    public CardDTO findAvailableCard() {
+        return mapper.toCardDTO(cardDAO.findAvailableCard());
     }
 
     @Override
-    public Employee findEmployee(Integer id) {
-        return employeeDAO.getReferenceById(id);
+    public EmployeeDTO findEmployee(Integer id) {
+        return mapper.toEmployeeDTO(employeeDAO.getReferenceById(id));
     }
 
     @Override

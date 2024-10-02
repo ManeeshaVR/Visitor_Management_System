@@ -1,5 +1,9 @@
 package com.ceyentra.visitor_management_system.service;
 
+import com.ceyentra.visitor_management_system.dto.CardDTO;
+import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
+import com.ceyentra.visitor_management_system.dto.VisitDTO;
+import com.ceyentra.visitor_management_system.dto.VisitorDTO;
 import com.ceyentra.visitor_management_system.entity.Card;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
@@ -9,25 +13,25 @@ import java.util.List;
 
 public interface VisitService {
 
-    Visit saveVisit(Visit visit);
+    VisitDTO saveVisit(VisitDTO visitDTO);
 
-    Visit updateVisit(Visit visit);
+    VisitDTO updateVisit(VisitDTO visitDTO);
 
     void deleteVisit(Integer id);
 
-    Visit findVisitById(Integer id);
+    VisitDTO findVisitById(Integer id);
 
-    List<Visit> findAllVisits();
+    List<VisitDTO> findAllVisits();
 
-    List<Visit> findVisitByVisitorNic(String nic);
+    List<VisitDTO> findVisitByVisitorNic(String nic);
 
-    List<Visit> findOverdueVisits();
+    List<VisitDTO> findOverdueVisits();
 
-    Visitor findVisitor(Integer id);
+    VisitorDTO findVisitor(Integer id);
 
-    Card findAvailableCard();
+    CardDTO findAvailableCard();
 
-    Employee findEmployee(Integer id);
+    EmployeeDTO findEmployee(Integer id);
 
     boolean existsVisit(Integer id);
 

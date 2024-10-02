@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.ceyentra</groupId>
 	<artifactId>visitor-management-system</artifactId>
@@ -79,8 +79,13 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> <!-- Use this if using Jackson -->
+			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper.extensions</groupId>
+			<artifactId>modelmapper-spring</artifactId>
+			<version>3.2.0</version>
 		</dependency>
 	</dependencies>
 

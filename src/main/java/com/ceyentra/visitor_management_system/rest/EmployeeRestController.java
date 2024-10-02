@@ -3,8 +3,6 @@ package com.ceyentra.visitor_management_system.rest;
 import com.ceyentra.visitor_management_system.dto.BuildingDTO;
 import com.ceyentra.visitor_management_system.dto.EmployeeDTO;
 import com.ceyentra.visitor_management_system.entity.Building;
-import com.ceyentra.visitor_management_system.entity.Employee;
-import com.ceyentra.visitor_management_system.exception.NotFoundException;
 import com.ceyentra.visitor_management_system.service.EmployeeService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,43 +28,23 @@ public class EmployeeRestController {
 
     @PostMapping("/employees/{buildingId}")
     public EmployeeDTO saveEmployee(@PathVariable int buildingId, @RequestBody EmployeeDTO employee){
-        BuildingDTO building = employeeService.findBuilding(buildingId);
-        if (building != null) {
-            employee.setId(0);
-            employee.setBuilding(building);
-            return employeeService.saveEmployee(employee);
-        }else {
-            throw new NotFoundException("Building not found with building ID " + buildingId);
-        }
+        return employeeService.saveEmployee(employee, buildingId);
     }
 
     @PutMapping("/employees/{employeeId}")
     public EmployeeDTO updateEmployee(@PathVariable int employeeId, @RequestBody EmployeeDTO employee){
-        if (employeeService.existsEmployee(employeeId)) {
-            employee.setId(employeeId);
-            return employeeService.updateEmployee(employee);
-        }else {
-            throw new NotFoundException("Employee not found with employee ID " + employeeId);
-        }
+        employee.setId(employeeId);
+        return employeeService.updateEmployee(employee);
     }
 
     @DeleteMapping("/employees/{employeeId}")
     public void deleteEmployee(@PathVariable int employeeId){
-        if (employeeService.existsEmployee(employeeId)) {
-            employeeService.deleteEmployee(employeeId);
-        }else {
-            throw new NotFoundException("Employee not found with employee ID " + employeeId);
-        }
-
+        employeeService.deleteEmployee(employeeId);
     }
 
     @GetMapping("/employees/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable int employeeId){
-        if (employeeService.existsEmployee(employeeId)) {
-            return employeeService.findEmployeeById(employeeId);
-        }else {
-            throw new NotFoundException("Employee not found with employee ID " + employeeId);
-        }
+        return employeeService.findEmployeeById(employeeId);
     }
 
     @GetMapping("/employees")

@@ -15,7 +15,7 @@ public interface VisitService {
 
     VisitDTO saveVisit(VisitDTO visitDTO, Integer employeeId, Integer visitorId);
 
-    VisitDTO updateVisit(VisitDTO visitDTO);
+    VisitDTO updateVisit(Integer visitId);
 
     void deleteVisit(Integer id);
 

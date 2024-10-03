@@ -75,27 +75,22 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public VisitDTO updateVisit(VisitDTO visitDTO) {
+    public VisitDTO updateVisit(Integer visitId) {
         try {
-            Optional<Visit> tempVisit = visitDAO.findById(visitDTO.getVisitId());
+            Optional<Visit> tempVisit = visitDAO.findById(visitId);
             if (tempVisit.isPresent()) {
                 Visit visit = tempVisit.get();
-                visit.setVisitor(mapper.toVisitorEntity(visitDTO.getVisitor()));
-                visit.setCard(mapper.toCardEntity(visitDTO.getCard()));
-                visit.setVisitDate(visitDTO.getVisitDate());
-                visit.setCheckIn(visitDTO.getCheckIn());
-                visit.setCheckOut(visitDTO.getCheckOut());
-                visit.setPurpose(visitDTO.getPurpose());
+                visit.setCheckOut(LocalTime.now());
 
                 // Update card status
-                Optional<Card> tempCard = cardDAO.findById(visitDTO.getCard().getCardId());
+                Optional<Card> tempCard = cardDAO.findById(visit.getCard().getCardId());
                     Card card = tempCard.get();
                     card.setStatus("Available");
 
                 return mapper.toVisitDTO(visitDAO.save(visit));
             } else {
-                logger.warn("Visit with ID {} not found.", visitDTO.getVisitId());
-                throw new ResourceNotFoundException("Visit not found with ID " + visitDTO.getVisitId());
+                logger.warn("Visit with ID {} not found.", visitId);
+                throw new ResourceNotFoundException("Visit not found with ID " + visitId);
             }
         } catch (DataAccessException e) {
             logger.error("Error updating visit: {}", e.getMessage());

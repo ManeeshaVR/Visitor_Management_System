@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface VisitService {
 
-    VisitDTO saveVisit(VisitDTO visitDTO);
+    VisitDTO saveVisit(VisitDTO visitDTO, Integer employeeId, Integer visitorId);
 
     VisitDTO updateVisit(VisitDTO visitDTO);
 

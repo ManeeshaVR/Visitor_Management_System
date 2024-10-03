@@ -12,12 +12,18 @@ import com.ceyentra.visitor_management_system.entity.Card;
 import com.ceyentra.visitor_management_system.entity.Employee;
 import com.ceyentra.visitor_management_system.entity.Visit;
 import com.ceyentra.visitor_management_system.entity.Visitor;
+import com.ceyentra.visitor_management_system.exception.ResourceNotFoundException;
 import com.ceyentra.visitor_management_system.service.VisitService;
 import com.ceyentra.visitor_management_system.util.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +36,7 @@ public class VisitServiceImpl implements VisitService {
     private CardDAO cardDAO;
     private EmployeeDAO employeeDAO;
     private final Mapper mapper;
+    private static final Logger logger = LoggerFactory.getLogger(VisitServiceImpl.class);
 
     @Autowired
     public VisitServiceImpl(VisitDAO visitDAO, VisitorDAO visitorDAO, CardDAO cardDAO, EmployeeDAO employeeDAO, Mapper mapper) {
@@ -41,63 +48,141 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public VisitDTO saveVisit(VisitDTO visitDTO) {
-        Optional<Card> tempCard = cardDAO.findById(visitDTO.getCard().getCardId());
-        tempCard.get().setCardNo(visitDTO.getCard().getCardNo());
-        tempCard.get().setStatus("Not Available");
-        return mapper.toVisitDTO(visitDAO.save(mapper.toVisitEntity(visitDTO)));
+    public VisitDTO saveVisit(VisitDTO visitDTO, Integer employeeId, Integer visitorId) {
+        try {
+            CardDTO availableCard = findAvailableCard();
+            EmployeeDTO employee = findEmployee(employeeId);
+            VisitorDTO visitor = findVisitor(visitorId);
+            if (availableCard == null){
+                throw new ResourceNotFoundException("All available cards have been assigned to visitors.");
+            }else if(employee == null){
+                throw new ResourceNotFoundException("Employee not found with employee ID : " + employeeId);
+            }else if(visitor == null){
+                throw new ResourceNotFoundException("Visitor not found with visitor ID : " + visitorId);
+            }else {
+               availableCard.setStatus("Not Available");
+                visitDTO.setVisitor(visitor);
+                visitDTO.setEmployee(employee);
+                visitDTO.setCard(availableCard);
+                visitDTO.setVisitDate(LocalDate.now());
+                visitDTO.setCheckIn(LocalTime.now());
+                return mapper.toVisitDTO(visitDAO.save(mapper.toVisitEntity(visitDTO)));
+            }
+        } catch (DataAccessException e) {
+            logger.error("Error saving visit: {}", e.getMessage());
+            throw new RuntimeException("Error saving visit data.", e);
+        }
     }
 
     @Override
     public VisitDTO updateVisit(VisitDTO visitDTO) {
-        Optional<Visit> tempVisit = visitDAO.findById(visitDTO.getVisitId());
-        tempVisit.get().setVisitor(mapper.toVisitorEntity(visitDTO.getVisitor()));
-        tempVisit.get().setCard(mapper.toCardEntity(visitDTO.getCard()));
-        tempVisit.get().setVisitDate(visitDTO.getVisitDate());
-        tempVisit.get().setCheckIn(visitDTO.getCheckIn());
-        tempVisit.get().setCheckOut(visitDTO.getCheckOut());
-        tempVisit.get().setPurpose(visitDTO.getPurpose());
+        try {
+            Optional<Visit> tempVisit = visitDAO.findById(visitDTO.getVisitId());
+            if (tempVisit.isPresent()) {
+                Visit visit = tempVisit.get();
+                visit.setVisitor(mapper.toVisitorEntity(visitDTO.getVisitor()));
+                visit.setCard(mapper.toCardEntity(visitDTO.getCard()));
+                visit.setVisitDate(visitDTO.getVisitDate());
+                visit.setCheckIn(visitDTO.getCheckIn());
+                visit.setCheckOut(visitDTO.getCheckOut());
+                visit.setPurpose(visitDTO.getPurpose());
 
-        Optional<Card> tempCard = cardDAO.findById(visitDTO.getCard().getCardId());
-        tempCard.get().setCardNo(visitDTO.getCard().getCardNo());
-        tempCard.get().setStatus("Available");
+                // Update card status
+                Optional<Card> tempCard = cardDAO.findById(visitDTO.getCard().getCardId());
+                    Card card = tempCard.get();
+                    card.setStatus("Available");
 
-        return mapper.toVisitDTO(visitDAO.getReferenceById(visitDTO.getVisitId()));
+                return mapper.toVisitDTO(visitDAO.save(visit));
+            } else {
+                logger.warn("Visit with ID {} not found.", visitDTO.getVisitId());
+                throw new ResourceNotFoundException("Visit not found with ID " + visitDTO.getVisitId());
+            }
+        } catch (DataAccessException e) {
+            logger.error("Error updating visit: {}", e.getMessage());
+            throw new RuntimeException("Error updating visit data.", e);
+        }
     }
 
     @Override
     public void deleteVisit(Integer id) {
-        visitDAO.deleteById(id);
+        try {
+            Optional<Visit> tempVisit = visitDAO.findById(id);
+            if (tempVisit.isPresent()) {
+                visitDAO.delete(tempVisit.get());
+            } else {
+                logger.warn("Visit with ID {} not found.", id);
+                throw new ResourceNotFoundException("Visit not found for ID: " + id);
+            }
+        } catch (DataAccessException e) {
+            logger.error("Error deleting visit: {}", e.getMessage());
+            throw new RuntimeException("Error deleting visit data.", e);
+        }
     }
 
     @Override
     public VisitDTO findVisitById(Integer id) {
-        return mapper.toVisitDTO(visitDAO.getReferenceById(id));
+        try {
+            Optional<Visit> tempVisit = visitDAO.findById(id);
+            if (tempVisit.isPresent()) {
+                return mapper.toVisitDTO(tempVisit.get());
+            } else {
+                logger.warn("Visit with ID {} not found.", id);
+                throw new ResourceNotFoundException("Visit not found for ID: " + id);
+            }
+        } catch (DataAccessException e) {
+            logger.error("Error finding visit by ID: {}", e.getMessage());
+            throw new RuntimeException("Error finding visit data.", e);
+        }
     }
 
     @Override
     public List<VisitDTO> findAllVisits() {
-        return mapper.toVisitDTOList(visitDAO.findAll());
+        try {
+            return mapper.toVisitDTOList(visitDAO.findAll());
+        } catch (DataAccessException e) {
+            logger.error("Error retrieving all visits: {}", e.getMessage());
+            throw new RuntimeException("Error retrieving visits data.", e);
+        }
     }
 
     @Override
     public List<VisitDTO> findVisitByVisitorNic(String nic) {
-        return mapper.toVisitDTOList(visitDAO.findVisitsByVisitorNic(nic));
+        try {
+            return mapper.toVisitDTOList(visitDAO.findVisitsByVisitorNic(nic));
+        } catch (DataAccessException e) {
+            logger.error("Error finding visits by NIC: {}", e.getMessage());
+            throw new RuntimeException("Error finding visits by visitor NIC.", e);
+        }
     }
 
     @Override
     public List<VisitDTO> findOverdueVisits() {
-        return mapper.toVisitDTOList(visitDAO.findOverdueVisits());
+        try {
+            return mapper.toVisitDTOList(visitDAO.findOverdueVisits());
+        } catch (DataAccessException e) {
+            logger.error("Error retrieving overdue visits: {}", e.getMessage());
+            throw new RuntimeException("Error retrieving overdue visits.", e);
+        }
     }
 
     @Override
     public VisitorDTO findVisitor(Integer id) {
-        return mapper.toVisitorDTO(visitorDAO.getReferenceById(id));
+        try {
+            return mapper.toVisitorDTO(visitorDAO.getReferenceById(id));
+        } catch (DataAccessException e) {
+            logger.error("Error finding visitor by ID: {}", e.getMessage());
+            throw new RuntimeException("Error finding visitor data.", e);
+        }
     }
 
     @Override
     public CardDTO findAvailableCard() {
-        return mapper.toCardDTO(cardDAO.findAvailableCard());
+        try {
+            return mapper.toCardDTO(cardDAO.findAvailableCard());
+        } catch (DataAccessException e) {
+            logger.error("Error finding available card: {}", e.getMessage());
+            throw new RuntimeException("Error finding available card.", e);
+        }
     }
 
     @Override
@@ -107,17 +192,32 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public boolean existsVisit(Integer id) {
-        return visitDAO.existsByVisitId(id);
+        try {
+            return visitDAO.existsById(id);
+        } catch (DataAccessException e) {
+            logger.error("Error checking visit existence: {}", e.getMessage());
+            throw new RuntimeException("Error checking visit existence.", e);
+        }
     }
 
     @Override
     public boolean existsVisitor(Integer id) {
-        return visitorDAO.existsByVisitorId(id);
+        try {
+            return visitorDAO.existsById(id);
+        } catch (DataAccessException e) {
+            logger.error("Error checking visitor existence: {}", e.getMessage());
+            throw new RuntimeException("Error checking visitor existence.", e);
+        }
     }
 
     @Override
     public boolean existsEmployee(Integer id) {
-        return employeeDAO.existsById(id);
+        try {
+            return employeeDAO.existsById(id);
+        } catch (DataAccessException e) {
+            logger.error("Error checking employee existence: {}", e.getMessage());
+            throw new RuntimeException("Error checking employee existence.", e);
+        }
     }
 
 }

@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 public class VisitDTO {
 
     private int visitId;
-    private Visitor visitor;
-    private Employee employee;
-    private Card card;
+    private VisitorDTO visitor;
+    private EmployeeDTO employee;
+    private CardDTO card;
     private LocalDate visitDate;
     private LocalTime checkIn;
     private LocalTime checkOut;

@@ -1,6 +1,5 @@
 package com.ceyentra.visitor_management_system.dto;
 
-import com.ceyentra.visitor_management_system.entity.Building;
 import com.ceyentra.visitor_management_system.enums.Floor;
 import jakarta.validation.constraints.Pattern;
 
@@ -21,7 +20,7 @@ public class EmployeeDTO {
     private String email;
     private String position;
     private String status;
-    private Building building;
+    private BuildingDTO building;
     private Floor floor;
 
 }
